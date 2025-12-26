@@ -84,6 +84,15 @@ docker run -p 8080:8080 -e VITE_GEMINI_API_KEY=your_key research-buddy
 
 ---
 
+## ⚙️ CI/CD Pipelines
+
+Automated policies are enforced via **GitHub Actions**:
+
+- **Continuous Integration**: Runs type checking (`tsc`) and build validation (`npm run build`) on every push and pull request.
+- **Docker Verification**: Ensures the `Dockerfile` builds correctly in a clean environment.
+
+---
+
 ## 🎨 Design Philosophy
 
 The UI follows a **"Deep Void"** aesthetic—utilizing deep blacks, emerald accents, and glassmorphism to create a futuristic, distraction-free reading environment.
