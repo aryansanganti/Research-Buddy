@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import logo from './logo.png';
 import { Brain, Github, ChevronRight, AlertCircle, FileText, Loader2, Layers } from 'lucide-react';
 import FileUpload from './components/FileUpload';
+import FeatureCarousel from './components/FeatureCarousel';
 import AnalysisDashboard from './components/AnalysisDashboard';
 
 import { AnalysisResult, AnalysisStatus, FileData } from './types';
@@ -97,12 +99,10 @@ const App: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-20%,#10b98115,transparent)] pointer-events-none"></div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800">
+      <header className="sticky top-0 z-50 bg-transparent backdrop-blur-md border-b border-white/5">
         <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer group" onClick={handleReset}>
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-105 transition-transform">
-              <Brain className="text-white w-5 h-5" />
-            </div>
+            <img src={logo} alt="Research-Buddy Logo" className="w-10 h-10 object-contain group-hover:scale-105 transition-transform" />
             <div>
               <h1 className="text-lg font-bold tracking-tight text-white leading-none">Research-Buddy</h1>
               <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-0.5 group-hover:text-green-400 transition-colors">Scientific Synthesis Engine</p>
@@ -118,9 +118,6 @@ const App: React.FC = () => {
                 </span>
               </div>
             )}
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white transition-colors">
-              <Github className="w-5 h-5" />
-            </a>
           </div>
         </div>
       </header>
@@ -137,12 +134,12 @@ const App: React.FC = () => {
             <div className="w-full max-w-4xl mx-auto space-y-8">
               <div className="space-y-4">
                 <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-none">
-                  Unleash Scientific <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Reproduction</span>
+                  Your Intelligent <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Research Co-Pilot</span>
                 </h2>
                 <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
-                  Transform static PDFs into living, breathing codebases. <br />
-                  <span className="text-emerald-500/80">Research-Buddy</span> reads, understands, and writes the code for you.
+                  Decode complex papers, extract methodologies, and generate implementation code instantly. <br />
+                  <span className="text-emerald-500/80">Research-Buddy</span> accelerates your journey from reading to replicating.
                 </p>
               </div>
 
@@ -151,22 +148,7 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full px-4">
-              {[
-                { icon: Brain, title: "Multimodal Core", desc: "Simultaneously parses text, equations, and visual data for complete context.", color: "emerald" },
-                { icon: Github, title: "Code Synthesis", desc: "Generates production-grade PyTorch code ready for immediate execution.", color: "cyan" },
-                { icon: ChevronRight, title: "Deep Analysis", desc: "Identifies contradictions and suggests novel experimental variants.", color: "teal" }
-              ].map((feature, idx) => (
-                <div key={idx} className="group relative p-6 rounded-2xl bg-slate-900/40 border border-white/5 hover:border-emerald-500/30 transition-all duration-300 hover:bg-slate-900/60 overflow-hidden">
-                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-${feature.color}-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`}></div>
-                  <div className={`w-12 h-12 rounded-xl bg-${feature.color}-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon size={24} className={`text-${feature.color}-400`} />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2 text-left">{feature.title}</h3>
-                  <p className="text-sm text-slate-400 text-left leading-relaxed">{feature.desc}</p>
-                </div>
-              ))}
-            </div>
+            <FeatureCarousel />
           </div>
         )}
 
