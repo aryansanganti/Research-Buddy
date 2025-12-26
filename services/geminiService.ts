@@ -12,7 +12,7 @@ const getGeminiClient = () => {
 
 export const analyzePaper = async (files: FileData[]): Promise<AnalysisResult> => {
   const ai = getGeminiClient();
-  
+
   // Create parts for all files
   const fileParts = files.map(file => {
     const base64Data = file.base64.split(',')[1] || file.base64;
@@ -26,7 +26,7 @@ export const analyzePaper = async (files: FileData[]): Promise<AnalysisResult> =
 
   try {
     const modelId = 'gemini-2.5-flash';
-    
+
     const response = await ai.models.generateContent({
       model: modelId,
       contents: {
@@ -85,7 +85,7 @@ export const analyzePaper = async (files: FileData[]): Promise<AnalysisResult> =
 
 export const chatWithPaperContext = async (prompt: string, context: AnalysisResult): Promise<string> => {
   const ai = getGeminiClient();
-  
+
   try {
     const modelId = 'gemini-2.5-flash';
     // We send a condensed context to save tokens and focus the model
@@ -100,7 +100,7 @@ export const chatWithPaperContext = async (prompt: string, context: AnalysisResu
       contents: {
         parts: [
           {
-            text: `You are PaperFusion Assistant. User is asking about a paper analysis (potentially involving multiple papers).
+            text: `You are Research-Buddy Assistant. User is asking about a paper analysis (potentially involving multiple papers).
             
             Current Analysis Context:
             ${contextString}

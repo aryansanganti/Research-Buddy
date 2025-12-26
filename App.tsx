@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Brain, Github, ChevronRight, AlertCircle, FileText, Loader2, Layers } from 'lucide-react';
 import FileUpload from './components/FileUpload';
 import AnalysisDashboard from './components/AnalysisDashboard';
-import HeroBanner from './components/HeroBanner';
+
 import { AnalysisResult, AnalysisStatus, FileData } from './types';
 import { analyzePaper, readFileAsBase64 } from './services/geminiService';
 
@@ -91,7 +91,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200 font-sans selection:bg-green-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-black text-slate-200 font-sans selection:bg-emerald-500/30 overflow-x-hidden relative">
+      {/* Background Grid Pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-20%,#10b98115,transparent)] pointer-events-none"></div>
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-slate-800">
@@ -101,7 +104,7 @@ const App: React.FC = () => {
               <Brain className="text-white w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight text-white leading-none">PaperFusion</h1>
+              <h1 className="text-lg font-bold tracking-tight text-white leading-none">Research-Buddy</h1>
               <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-0.5 group-hover:text-green-400 transition-colors">Scientific Synthesis Engine</p>
             </div>
           </div>
@@ -127,46 +130,42 @@ const App: React.FC = () => {
 
         {/* State: IDLE - Upload Screen */}
         {status === AnalysisStatus.IDLE && (
-          <div className="flex flex-col items-center justify-center min-h-[75vh] max-w-4xl mx-auto text-center space-y-12 animate-in fade-in duration-700">
+          <div className="flex flex-col items-center justify-center min-h-[80vh] max-w-6xl mx-auto text-center space-y-16 animate-in fade-in duration-1000">
 
-            <HeroBanner />
 
-            <div className="space-y-6 max-w-2xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-200 via-emerald-200 to-slate-200 tracking-tight leading-tight">
-                Literature to Executable Code.<br />Instantly.
-              </h2>
-              <p className="text-lg text-slate-400 max-w-lg mx-auto leading-relaxed">
-                Upload scientific papers or architectural diagrams. <br />
-                PaperFusion extracts methods, resolves contradictions, and generates executable PyTorch code.
-              </p>
+
+            <div className="w-full max-w-4xl mx-auto space-y-8">
+              <div className="space-y-4">
+                <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-none">
+                  Unleash Scientific <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Reproduction</span>
+                </h2>
+                <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
+                  Transform static PDFs into living, breathing codebases. <br />
+                  <span className="text-emerald-500/80">Research-Buddy</span> reads, understands, and writes the code for you.
+                </p>
+              </div>
+
+              <div className="w-full max-w-lg mx-auto transform hover:scale-[1.02] transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.3)]">
+                <FileUpload onFileSelect={handleFilesSelect} isLoading={false} />
+              </div>
             </div>
 
-            <div className="w-full max-w-md mx-auto transform hover:scale-[1.01] transition-transform duration-300">
-              <FileUpload onFileSelect={handleFilesSelect} isLoading={false} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left w-full mt-8">
-              <div className="p-5 rounded-xl bg-slate-800/20 border border-slate-800/60 hover:border-green-500/30 hover:bg-slate-800/40 transition-all duration-300 group">
-                <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mb-3 group-hover:bg-green-500/20 transition-colors">
-                  <Brain size={20} className="text-green-400" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full px-4">
+              {[
+                { icon: Brain, title: "Multimodal Core", desc: "Simultaneously parses text, equations, and visual data for complete context.", color: "emerald" },
+                { icon: Github, title: "Code Synthesis", desc: "Generates production-grade PyTorch code ready for immediate execution.", color: "cyan" },
+                { icon: ChevronRight, title: "Deep Analysis", desc: "Identifies contradictions and suggests novel experimental variants.", color: "teal" }
+              ].map((feature, idx) => (
+                <div key={idx} className="group relative p-6 rounded-2xl bg-slate-900/40 border border-white/5 hover:border-emerald-500/30 transition-all duration-300 hover:bg-slate-900/60 overflow-hidden">
+                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-${feature.color}-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                  <div className={`w-12 h-12 rounded-xl bg-${feature.color}-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon size={24} className={`text-${feature.color}-400`} />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2 text-left">{feature.title}</h3>
+                  <p className="text-sm text-slate-400 text-left leading-relaxed">{feature.desc}</p>
                 </div>
-                <h3 className="font-bold text-slate-200 mb-1">Multimodal Parsing</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">Understands PDF text, equations, tables, and plot images simultaneously.</p>
-              </div>
-              <div className="p-5 rounded-xl bg-slate-800/20 border border-slate-800/60 hover:border-violet-500/30 hover:bg-slate-800/40 transition-all duration-300 group">
-                <div className="w-10 h-10 rounded-lg bg-violet-500/10 flex items-center justify-center mb-3 group-hover:bg-violet-500/20 transition-colors">
-                  <Github size={20} className="text-violet-400" />
-                </div>
-                <h3 className="font-bold text-slate-200 mb-1">Code Generation</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">Produces runnable PyTorch training loops, dataloaders, and baselines.</p>
-              </div>
-              <div className="p-5 rounded-xl bg-slate-800/20 border border-slate-800/60 hover:border-emerald-500/30 hover:bg-slate-800/40 transition-all duration-300 group">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3 group-hover:bg-emerald-500/20 transition-colors">
-                  <ChevronRight size={20} className="text-emerald-400" />
-                </div>
-                <h3 className="font-bold text-slate-200 mb-1">Variant Discovery</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">Suggests ablations, hybrid models, and high-risk improvements automatically.</p>
-              </div>
+              ))}
             </div>
           </div>
         )}

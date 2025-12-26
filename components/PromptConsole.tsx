@@ -67,8 +67,8 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed ${msg.role === 'user'
-                ? 'bg-green-600 text-white rounded-br-none'
-                : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
+              ? 'bg-green-600 text-white rounded-br-none'
+              : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
               }`}>
               {msg.role === 'model' && <Cpu size={14} className="mb-2 text-green-400 opacity-50" />}
               <div className="whitespace-pre-wrap">{msg.content}</div>
@@ -107,7 +107,7 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask PaperFusion to refine the experiment..."
+            placeholder="Ask Research-Buddy to refine the experiment..."
             className="w-full bg-slate-900 border border-slate-600 text-slate-200 rounded-lg pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all"
           />
           <button

@@ -54,8 +54,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect, isLoading }) => {
         border-2 border-dashed rounded-xl transition-all duration-300
         flex flex-col items-center justify-center p-8 h-48
         ${isDragging
-          ? 'border-green-500 bg-green-500/10 scale-[1.02]'
-          : 'border-slate-600 hover:border-green-400 hover:bg-slate-800/50 bg-slate-800/20'
+          ? 'border-emerald-500 bg-emerald-500/10 scale-[1.02] shadow-[0_0_30px_-5px_rgba(16,185,129,0.2)]'
+          : 'border-white/10 hover:border-emerald-500/50 hover:bg-white/5 bg-white/5 backdrop-blur-sm'
         }
       `}
     >
