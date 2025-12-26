@@ -3,9 +3,9 @@ import { PAPER_FUSION_SYSTEM_PROMPT } from '../constants';
 import { AnalysisResult, FileData } from '../types';
 
 const getGeminiClient = () => {
-  const apiKey = process.env.API_KEY;
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error("API_KEY environment variable is missing.");
+    throw new Error("VITE_GEMINI_API_KEY environment variable is missing.");
   }
   return new GoogleGenAI({ apiKey });
 };
