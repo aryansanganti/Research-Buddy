@@ -22,6 +22,11 @@ RUN sed -i 's/listen       80;/listen       8080;/' /etc/nginx/conf.d/default.co
 # This replaces the default location / block
 RUN sed -i '/location \/ {/,/}/c\    location / {\n        root   /usr/share/nginx/html;\n        index  index.html index.htm;\n        try_files $uri $uri/ /index.html;\n    }' /etc/nginx/conf.d/default.conf
 
+# Copy env script for runtime injection
+COPY env.sh /
+RUN chmod +x /env.sh
+
 EXPOSE 8080
 
+ENTRYPOINT ["/env.sh"]
 CMD ["nginx", "-g", "daemon off;"]

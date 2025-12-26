@@ -2,10 +2,19 @@ import { GoogleGenAI } from "@google/genai";
 import { PAPER_FUSION_SYSTEM_PROMPT } from '../constants';
 import { AnalysisResult, FileData } from '../types';
 
+declare global {
+  interface Window {
+    env: {
+      VITE_GEMINI_API_KEY: string;
+    };
+  }
+}
+
 const getGeminiClient = () => {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const apiKey = window.env?.VITE_GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+
   if (!apiKey) {
-    throw new Error("VITE_GEMINI_API_KEY environment variable is missing.");
+    throw new Error("VITE_GEMINI_API_KEY environment variable is missing in both window.env and import.meta.env.");
   }
   return new GoogleGenAI({ apiKey });
 };
