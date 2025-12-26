@@ -1,0 +1,5 @@
+{
+  "name": "PaperFusion",
+  "description": "An AI engine that converts scientific literature into fully structured, executable experiments using Gemini 2.5.",
+  "requestFramePermissions": []
+}
