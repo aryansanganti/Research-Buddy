@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AnalysisResult, FileData, Variant } from '../types';
 import MethodGraph from './MethodGraph';
 import ReasoningPanel from './ReasoningPanel';
@@ -6,7 +6,7 @@ import CodeViewer from './CodeViewer';
 import BeforeAfterViewer from './BeforeAfterViewer';
 import PromptConsole from './PromptConsole';
 import ConfidenceMeter from './ConfidenceMeter';
-import { GitBranch, Beaker, FileText, Activity, Download, ArrowDownToLine, Zap, Layers, AlertTriangle, Crosshair } from 'lucide-react';
+import { GitBranch, Beaker, FileText, Activity, Download, ArrowDownToLine, Zap, Layers, AlertTriangle, Crosshair, MessageSquare, LayoutDashboard } from 'lucide-react';
 
 interface AnalysisDashboardProps {
   result: AnalysisResult;
@@ -14,6 +14,16 @@ interface AnalysisDashboardProps {
 }
 
 const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ result, files }) => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'graph' | 'code' | 'logic' | 'variants' | 'chat'>('overview');
+
+  const navItems = [
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'graph', label: 'Method Pipeline', icon: Activity },
+    { id: 'code', label: 'Code & Export', icon: FileText },
+    { id: 'logic', label: 'Analysis Logic', icon: Beaker },
+    { id: 'variants', label: 'Creative Variants', icon: GitBranch },
+    { id: 'chat', label: 'Research Chat', icon: MessageSquare },
+  ];
 
   const handleExportJSON = () => {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(result, null, 2));
@@ -56,117 +66,134 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ result, files }) 
   };
 
   return (
-    <div className="flex flex-col gap-8 pb-12">
+    <div className="flex flex-col lg:flex-row min-h-[800px] gap-6 bg-black/20 rounded-3xl border border-white/5 overflow-hidden backdrop-blur-sm">
 
-      {/* Top Section: Split View */}
-      {files.length > 0 && (
-        <section className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <BeforeAfterViewer files={files} result={result} />
-        </section>
-      )}
+      {/* Sidebar Navigation */}
+      <aside className="w-full lg:w-64 bg-slate-900/50 border-r border-white/5 p-4 flex flex-col gap-2">
+        <div className="mb-4 px-2 py-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+          Analysis Views
+        </div>
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => setActiveTab(item.id as any)}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${activeTab === item.id
+              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+              : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
+              }`}
+          >
+            <item.icon size={18} />
+            {item.label}
+          </button>
+        ))}
+      </aside>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Main Content Area */}
+      <main className="flex-1 p-6 lg:p-8 overflow-y-auto max-h-[90vh]">
 
-        {/* LEFT COLUMN (7 cols) */}
-        <div className="lg:col-span-7 flex flex-col gap-8">
+        {/* Tab: Overview */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            <h2 className="text-2xl font-bold text-white mb-6">Analysis Overview</h2>
+            {files.length > 0 && <BeforeAfterViewer files={files} result={result} />}
+          </div>
+        )}
 
-          {/* Method Graph */}
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-                <Activity className="text-green-500" size={24} />
-                Method Pipeline
-              </h2>
+        {/* Tab: Method Graph */}
+        {activeTab === 'graph' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-white">Method Pipeline</h2>
             </div>
             <MethodGraph data={result.graph} />
-          </section>
+          </div>
+        )}
 
-          {/* Prompt Console */}
-          <section className="space-y-3">
-            <PromptConsole context={result} />
-          </section>
-
-          {/* Code Viewer & Export */}
-          <section className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-slate-100 flex items-center gap-2">
-                <FileText className="text-emerald-500" size={24} />
-                Replication Code
-              </h2>
+        {/* Tab: Code */}
+        {activeTab === 'code' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-2xl font-bold text-white">Replication Code</h2>
               <div className="flex gap-2">
-                <button onClick={handleExportJSON} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 text-xs text-slate-300 transition-colors">
-                  <Download size={14} /> JSON Pack
+                <button onClick={handleExportJSON} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 text-sm text-slate-200 transition-colors">
+                  <Download size={16} /> JSON Pack
                 </button>
-                <button onClick={handleExportPython} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 text-xs text-slate-300 transition-colors">
-                  <ArrowDownToLine size={14} /> .py File
+                <button onClick={handleExportPython} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600/20 border border-emerald-500/30 hover:bg-emerald-600/30 text-sm text-emerald-400 transition-colors">
+                  <ArrowDownToLine size={16} /> .py File
                 </button>
               </div>
             </div>
             <CodeViewer code={result.code} />
-          </section>
-        </div>
+          </div>
+        )}
 
-        {/* RIGHT COLUMN (5 cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-
-          {/* Confidence Meter & Reasoning */}
-          <section className="bg-slate-900/50 rounded-xl border border-slate-700 p-5 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-                <Beaker className="text-violet-500" size={20} />
-                Analysis Logic
-              </h2>
+        {/* Tab: Logic */}
+        {activeTab === 'logic' && (
+          <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-500 max-w-4xl">
+            <h2 className="text-2xl font-bold text-white">Analysis Logic</h2>
+            <div className="bg-slate-900/50 rounded-xl border border-white/5 p-6">
+              <ConfidenceMeter score={result.summary.overall_confidence} missingCount={result.summary.missing_details.length} />
             </div>
-            <ConfidenceMeter score={result.summary.overall_confidence} missingCount={result.summary.missing_details.length} />
             <ReasoningPanel result={result} />
-          </section>
+          </div>
+        )}
 
-          {/* Variants */}
-          <section className="space-y-4">
+        {/* Tab: Variants */}
+        {activeTab === 'variants' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
-                <GitBranch className="text-amber-500" size={20} />
-                Creative Variants
-              </h2>
-              <span className="text-xs text-amber-500/80 bg-amber-950/30 px-2 py-1 rounded border border-amber-900">AI Generated</span>
+              <h2 className="text-2xl font-bold text-white">Creative Variants</h2>
+              <span className="text-xs text-amber-500/80 bg-amber-950/30 px-3 py-1 rounded-full border border-amber-900">AI Generated Suggestions</span>
             </div>
-
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {result.variants.map((variant, idx) => (
-                <div key={idx} className={`border rounded-xl p-4 transition-all duration-300 group ${getVariantColor(variant.type)}`}>
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center gap-2">
-                      {getVariantIcon(variant.type)}
-                      <h3 className="font-bold text-slate-200">{variant.name}</h3>
+                <div key={idx} className={`border rounded-2xl p-6 transition-all duration-300 group hover:shadow-lg ${getVariantColor(variant.type)}`}>
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-black/20">
+                        {getVariantIcon(variant.type)}
+                      </div>
+                      <h3 className="font-bold text-lg text-slate-100">{variant.name}</h3>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-black/40 text-slate-400">
+                    <span className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-black/40 text-slate-400">
                       {variant.type}
                     </span>
                   </div>
 
-                  <p className="text-sm text-slate-400 mb-3 leading-relaxed">{variant.description}</p>
+                  <p className="text-sm text-slate-300 mb-6 leading-relaxed bg-black/20 p-3 rounded-lg border border-white/5">{variant.description}</p>
 
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-slate-900/60 p-2 rounded border border-slate-800/50">
-                      <div className="text-[10px] text-slate-500 uppercase">Accuracy Impact</div>
-                      <div className="text-emerald-400 font-mono text-xs font-bold">{variant.expected_accuracy_impact || "N/A"}</div>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/50">
+                      <div className="text-[10px] text-slate-500 uppercase font-bold mb-1">Accuracy Impact</div>
+                      <div className="text-emerald-400 font-mono text-sm font-bold">{variant.expected_accuracy_impact || "N/A"}</div>
                     </div>
-                    <div className="bg-slate-900/60 p-2 rounded border border-slate-800/50">
-                      <div className="text-[10px] text-slate-500 uppercase">Compute Cost</div>
-                      <div className="text-red-400 font-mono text-xs font-bold">{variant.expected_compute_impact || "N/A"}</div>
+                    <div className="bg-slate-900/60 p-3 rounded-lg border border-slate-800/50">
+                      <div className="text-[10px] text-slate-500 uppercase font-bold mb-1">Compute Cost</div>
+                      <div className="text-red-400 font-mono text-sm font-bold">{variant.expected_compute_impact || "N/A"}</div>
                     </div>
                   </div>
 
-                  <div className="bg-slate-900/50 p-2 rounded border border-slate-800">
-                    <p className="text-xs text-slate-400 italic">"{variant.rationale}"</p>
+                  <div className="bg-slate-900/50 p-3 rounded-lg border border-slate-800 flex gap-2">
+                    <div className="w-1 bg-slate-700 rounded-full h-full"></div>
+                    <p className="text-xs text-slate-400 italic leading-relaxed">"{variant.rationale}"</p>
                   </div>
                 </div>
               ))}
             </div>
-          </section>
+          </div>
+        )}
 
-        </div>
-      </div>
+        {/* Tab: Chat */}
+        {activeTab === 'chat' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500 h-[700px] flex flex-col">
+            <h2 className="text-2xl font-bold text-white">Research Assistant</h2>
+            <div className="flex-1 bg-slate-950/50 rounded-2xl border border-white/5 p-1 overflow-hidden">
+              <PromptConsole context={result} />
+            </div>
+          </div>
+        )}
+
+      </main>
     </div>
   );
 };
