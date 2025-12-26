@@ -24,7 +24,7 @@ const MethodGraph: React.FC<MethodGraphProps> = ({ data }) => {
     svg.selectAll("*").remove(); // Clear previous
 
     const colorMap: Record<string, string> = {
-      dataset: '#3b82f6', // blue-500
+      dataset: '#10b981', // green-500
       preprocessing: '#f59e0b', // amber-500
       model: '#ef4444', // red-500
       training: '#8b5cf6', // violet-500
@@ -145,12 +145,12 @@ const MethodGraph: React.FC<MethodGraphProps> = ({ data }) => {
       <div className="absolute top-4 left-4 z-10 bg-slate-900/90 p-3 rounded-lg border border-slate-700 text-xs backdrop-blur-md shadow-xl">
         <div className="font-bold mb-2 text-slate-400 uppercase tracking-wider flex justify-between items-center">
           <span>Method Pipeline</span>
-          <button onClick={handleReplay} className="text-blue-400 hover:text-white transition-colors" title="Replay Animation">
+          <button onClick={handleReplay} className="text-green-400 hover:text-white transition-colors" title="Replay Animation">
             <RefreshCw size={12} />
           </button>
         </div>
         <div className="flex flex-col gap-1.5">
-          <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>Dataset</div>
+          <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></div>Dataset</div>
           <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]"></div>Preprocessing</div>
           <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></div>Model</div>
           <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.6)]"></div>Training</div>

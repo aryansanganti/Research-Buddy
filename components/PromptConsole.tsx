@@ -54,7 +54,7 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
     <div className="flex flex-col h-[400px] bg-slate-900 rounded-xl border border-slate-700 overflow-hidden shadow-xl">
       <div className="flex items-center justify-between px-4 py-3 bg-slate-800 border-b border-slate-700">
         <div className="flex items-center gap-2 text-slate-200">
-          <Terminal size={16} className="text-blue-400" />
+          <Terminal size={16} className="text-green-400" />
           <span className="text-sm font-semibold">Prompt Console</span>
         </div>
         <div className="flex items-center gap-2">
@@ -66,24 +66,23 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
       <div className="flex-1 overflow-auto p-4 custom-scrollbar space-y-4 bg-slate-900/50" ref={scrollRef}>
         {messages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed ${
-              msg.role === 'user' 
-                ? 'bg-blue-600 text-white rounded-br-none' 
+            <div className={`max-w-[85%] rounded-lg p-3 text-sm leading-relaxed ${msg.role === 'user'
+                ? 'bg-green-600 text-white rounded-br-none'
                 : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
-            }`}>
-              {msg.role === 'model' && <Cpu size={14} className="mb-2 text-blue-400 opacity-50" />}
+              }`}>
+              {msg.role === 'model' && <Cpu size={14} className="mb-2 text-green-400 opacity-50" />}
               <div className="whitespace-pre-wrap">{msg.content}</div>
             </div>
           </div>
         ))}
         {isTyping && (
-           <div className="flex justify-start">
-             <div className="bg-slate-800 p-3 rounded-lg rounded-bl-none border border-slate-700 flex gap-1">
-               <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
-               <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
-               <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
-             </div>
-           </div>
+          <div className="flex justify-start">
+            <div className="bg-slate-800 p-3 rounded-lg rounded-bl-none border border-slate-700 flex gap-1">
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-100"></span>
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-200"></span>
+            </div>
+          </div>
         )}
       </div>
 
@@ -91,8 +90,8 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
         {messages.length < 3 && (
           <div className="flex gap-2 overflow-x-auto pb-3 no-scrollbar">
             {suggestions.map((s, i) => (
-              <button 
-                key={i} 
+              <button
+                key={i}
                 onClick={() => setInput(s)}
                 className="flex items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full bg-slate-700/50 hover:bg-slate-700 border border-slate-600 text-xs text-slate-300 transition-colors"
               >
@@ -109,12 +108,12 @@ const PromptConsole: React.FC<PromptConsoleProps> = ({ context }) => {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask PaperFusion to refine the experiment..."
-            className="w-full bg-slate-900 border border-slate-600 text-slate-200 rounded-lg pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+            className="w-full bg-slate-900 border border-slate-600 text-slate-200 rounded-lg pl-4 pr-12 py-3 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-all"
           />
-          <button 
+          <button
             onClick={handleSend}
             disabled={!input.trim() || isTyping}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-green-600 hover:bg-green-500 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Send size={16} />
           </button>

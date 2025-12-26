@@ -36,7 +36,7 @@ const PdfPageRenderer: React.FC<{ pdf: any; pageNum: number }> = ({ pdf, pageNum
         };
 
         await page.render(renderContext).promise;
-        if(active) setLoading(false);
+        if (active) setLoading(false);
       } catch (err) {
         console.error(`Error rendering page ${pageNum}`, err);
       }
@@ -49,7 +49,7 @@ const PdfPageRenderer: React.FC<{ pdf: any; pageNum: number }> = ({ pdf, pageNum
     <div className="relative mb-4 bg-white rounded shadow-lg overflow-hidden w-full">
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-100 text-slate-400">
-           <Loader2 className="animate-spin" size={24} />
+          <Loader2 className="animate-spin" size={24} />
         </div>
       )}
       <canvas ref={canvasRef} className="w-full h-auto block" />
@@ -61,7 +61,7 @@ const BeforeAfterViewer: React.FC<BeforeAfterViewerProps> = ({ files, result }) 
   const [splitPos, setSplitPos] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFileIndex, setSelectedFileIndex] = useState(0);
-  
+
   // PDF State
   const [pdfDocument, setPdfDocument] = useState<any>(null);
   const [numPages, setNumPages] = useState(0);
@@ -119,7 +119,7 @@ const BeforeAfterViewer: React.FC<BeforeAfterViewerProps> = ({ files, result }) 
   const currentFile = files[selectedFileIndex];
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="relative w-full h-[700px] bg-slate-900 rounded-xl border border-slate-700 overflow-hidden select-none group"
       onMouseMove={handleMouseMove}
@@ -129,48 +129,47 @@ const BeforeAfterViewer: React.FC<BeforeAfterViewerProps> = ({ files, result }) 
       onTouchEnd={() => setIsDragging(false)}
     >
       <div className="absolute top-4 left-4 z-20 flex gap-2">
-         <div className="bg-slate-900/90 backdrop-blur text-slate-200 text-xs font-bold px-1 py-1 rounded-lg border border-slate-700 flex items-center shadow-lg">
-            {files.map((f, idx) => (
-              <button
-                key={idx}
-                onClick={() => setSelectedFileIndex(idx)}
-                className={`px-3 py-1 rounded-md transition-all ${
-                  selectedFileIndex === idx 
-                    ? 'bg-blue-600 text-white shadow-sm' 
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+        <div className="bg-slate-900/90 backdrop-blur text-slate-200 text-xs font-bold px-1 py-1 rounded-lg border border-slate-700 flex items-center shadow-lg">
+          {files.map((f, idx) => (
+            <button
+              key={idx}
+              onClick={() => setSelectedFileIndex(idx)}
+              className={`px-3 py-1 rounded-md transition-all ${selectedFileIndex === idx
+                  ? 'bg-green-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
-              >
-                {files.length > 1 ? `File ${idx + 1}` : 'Input Document'}
-              </button>
-            ))}
-         </div>
+            >
+              {files.length > 1 ? `File ${idx + 1}` : 'Input Document'}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="absolute top-4 right-4 z-20 pointer-events-none">
-         <div className="bg-slate-900/80 backdrop-blur text-slate-200 text-xs font-bold px-3 py-1 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
-            <Code2 size={12} className="text-emerald-400" /> STRUCTURED DATA
-         </div>
+        <div className="bg-slate-900/80 backdrop-blur text-slate-200 text-xs font-bold px-3 py-1 rounded-full border border-slate-700 flex items-center gap-2 shadow-lg">
+          <Code2 size={12} className="text-emerald-400" /> STRUCTURED DATA
+        </div>
       </div>
 
       {/* Left Side: PDF/Image (Scrollable) */}
-      <div 
+      <div
         className="absolute top-0 left-0 h-full bg-slate-800"
         style={{ width: `${splitPos}%` }}
       >
         <div className="w-full h-full overflow-y-auto custom-scrollbar relative bg-slate-800/50 pt-16 px-4 pb-20">
-          
+
           {currentFile && currentFile.type.includes('pdf') && pdfDocument ? (
-             <div className="flex flex-col items-center gap-4 max-w-full">
-                {Array.from(new Array(numPages), (el, index) => (
-                   <PdfPageRenderer key={`page_${index + 1}`} pdf={pdfDocument} pageNum={index + 1} />
-                ))}
-             </div>
+            <div className="flex flex-col items-center gap-4 max-w-full">
+              {Array.from(new Array(numPages), (el, index) => (
+                <PdfPageRenderer key={`page_${index + 1}`} pdf={pdfDocument} pageNum={index + 1} />
+              ))}
+            </div>
           ) : currentFile ? (
-             <div className="flex justify-center">
-                <img src={currentFile.base64} alt="Input" className="max-w-full h-auto object-contain rounded-lg shadow-2xl" />
-             </div>
+            <div className="flex justify-center">
+              <img src={currentFile.base64} alt="Input" className="max-w-full h-auto object-contain rounded-lg shadow-2xl" />
+            </div>
           ) : (
             <div className="flex items-center justify-center h-full text-slate-500">
-               <Loader2 className="animate-spin mr-2" /> Loading document...
+              <Loader2 className="animate-spin mr-2" /> Loading document...
             </div>
           )}
 
@@ -181,25 +180,25 @@ const BeforeAfterViewer: React.FC<BeforeAfterViewerProps> = ({ files, result }) 
       </div>
 
       {/* Right Side: Parsed JSON View */}
-      <div 
+      <div
         className="absolute top-0 right-0 h-full bg-[#0d1117]"
         style={{ width: `${100 - splitPos}%` }}
       >
         <div className="w-full h-full overflow-auto p-8 pt-16 custom-scrollbar">
-           <pre className="text-xs font-mono text-emerald-300 leading-relaxed whitespace-pre-wrap">
-             {JSON.stringify(result.summary, null, 2)}
-           </pre>
+          <pre className="text-xs font-mono text-emerald-300 leading-relaxed whitespace-pre-wrap">
+            {JSON.stringify(result.summary, null, 2)}
+          </pre>
         </div>
       </div>
 
       {/* Split Handle */}
-      <div 
-        className="absolute top-0 bottom-0 w-1 bg-blue-500 cursor-col-resize hover:bg-blue-400 transition-colors z-30 flex items-center justify-center"
+      <div
+        className="absolute top-0 bottom-0 w-1 bg-green-500 cursor-col-resize hover:bg-green-400 transition-colors z-30 flex items-center justify-center"
         style={{ left: `${splitPos}%` }}
         onMouseDown={() => setIsDragging(true)}
         onTouchStart={() => setIsDragging(true)}
       >
-        <div className="w-6 h-12 bg-blue-500 rounded-full flex items-center justify-center shadow-lg -ml-[1px] hover:scale-110 transition-transform">
+        <div className="w-6 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-lg -ml-[1px] hover:scale-110 transition-transform">
           <GripVertical size={14} className="text-white" />
         </div>
       </div>
