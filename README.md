@@ -1,10 +1,6 @@
 # Research-Buddy 🧠✨
 > **Your Intelligent Research Co-Pilot**
 
-![Project Status](https://img.shields.io/badge/Status-Active-emerald?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
-![Stack](https://img.shields.io/badge/Tech-React%20%7C%20Vite%20%7C%20AI-blueviolet?style=flat-square)
-
 **Research-Buddy** is a next-generation research analysis tool designed to deconstruct complex scientific papers into actionable insights. Powered by **Google Gemini 2.0 Flash**, it transforms static PDFs into interactive knowledge graphs, executable code replication, and deep comparative analysis.
 
 ---
