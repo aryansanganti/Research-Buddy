@@ -105,7 +105,6 @@ const App: React.FC = () => {
             <img src={logo} alt="Research-Buddy Logo" className="w-10 h-10 object-contain group-hover:scale-105 transition-transform" />
             <div>
               <h1 className="text-lg font-bold tracking-tight text-white leading-none">Research-Buddy</h1>
-              <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-0.5 group-hover:text-green-400 transition-colors">Scientific Synthesis Engine</p>
             </div>
           </div>
 
