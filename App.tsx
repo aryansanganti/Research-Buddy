@@ -122,27 +122,25 @@ const App: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-[1600px] mx-auto px-6 py-8">
+      <main className="max-w-[1400px] mx-auto px-4 lg:px-6 py-6 lg:py-8">
 
         {/* State: IDLE - Upload Screen */}
         {status === AnalysisStatus.IDLE && (
-          <div className="flex flex-col items-center justify-center min-h-[80vh] max-w-6xl mx-auto text-center space-y-16 animate-in fade-in duration-1000">
+          <div className="flex flex-col items-center justify-center min-h-[75vh] max-w-5xl mx-auto text-center space-y-12 lg:space-y-16 animate-in fade-in duration-1000">
 
-
-
-            <div className="w-full max-w-4xl mx-auto space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-none">
+            <div className="w-full max-w-4xl mx-auto space-y-6 lg:space-y-8">
+              <div className="space-y-3 lg:space-y-4 px-2">
+                <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.1]">
                   Your Intelligent <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Research Co-Pilot</span>
                 </h2>
-                <p className="text-xl text-slate-400 max-w-2xl mx-auto font-light">
-                  Decode complex papers, extract methodologies, and generate implementation code instantly. <br />
-                  <span className="text-emerald-500/80">Research-Buddy</span> accelerates your journey from reading to replicating.
+                <p className="text-base lg:text-xl text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
+                  Decode complex papers, extract methodologies, and generate implementation code instantly.
+                  <span className="text-emerald-500/80 hidden sm:inline"> Research-Buddy accelerates your journey from reading to replicating.</span>
                 </p>
               </div>
 
-              <div className="w-full max-w-lg mx-auto transform hover:scale-[1.02] transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.3)]">
+              <div className="w-full max-w-md lg:max-w-lg mx-auto">
                 <FileUpload onFileSelect={handleFilesSelect} isLoading={false} />
               </div>
             </div>
@@ -153,22 +151,22 @@ const App: React.FC = () => {
 
         {/* State: ANALYZING */}
         {status === AnalysisStatus.ANALYZING && (
-          <div className="flex flex-col items-center justify-center min-h-[60vh]">
-            <div className="w-full max-w-md mb-8 opacity-50 pointer-events-none grayscale">
+          <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
+            <div className="w-full max-w-sm lg:max-w-md mb-8 opacity-50 pointer-events-none grayscale">
               <FileUpload onFileSelect={() => { }} isLoading={true} />
             </div>
 
-            <div className="max-w-xl w-full text-center">
+            <div className="max-w-md lg:max-w-xl w-full text-center">
               <div className="flex items-center justify-between text-xs text-slate-400 mb-2 uppercase tracking-wider font-semibold">
                 <span>Processing</span>
                 <span>{Math.round(loadingProgress)}%</span>
               </div>
               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-6 relative">
                 <div
-                  className="h-full bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300 ease-out"
+                  className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500 transition-all duration-300 ease-out"
                   style={{ width: `${loadingProgress}%` }}
                 ></div>
-                <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
+                <div className="absolute inset-0 bg-white/10 animate-[shimmer_2s_infinite]"></div>
               </div>
 
               <div className="h-8 relative overflow-hidden">
@@ -182,8 +180,8 @@ const App: React.FC = () => {
                         : 'translate-y-full opacity-0'
                       }`}
                   >
-                    <Loader2 className="w-4 h-4 text-green-400 animate-spin" />
-                    <span className="text-green-200 font-medium">{step}</span>
+                    <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+                    <span className="text-emerald-200 font-medium text-sm">{step}</span>
                   </div>
                 ))}
               </div>
@@ -193,15 +191,15 @@ const App: React.FC = () => {
 
         {/* State: ERROR */}
         {status === AnalysisStatus.ERROR && (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] max-w-lg mx-auto text-center animate-in zoom-in-95 duration-300">
-            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6 ring-1 ring-red-500/30">
-              <AlertCircle className="w-10 h-10 text-red-500" />
+          <div className="flex flex-col items-center justify-center min-h-[60vh] max-w-md mx-auto text-center animate-in zoom-in-95 duration-300 px-4">
+            <div className="w-16 h-16 lg:w-20 lg:h-20 bg-red-500/10 rounded-2xl flex items-center justify-center mb-6 border border-red-500/20">
+              <AlertCircle className="w-8 h-8 lg:w-10 lg:h-10 text-red-500" />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Analysis Failed</h3>
-            <p className="text-slate-400 mb-8 leading-relaxed">{error}</p>
+            <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">Analysis Failed</h3>
+            <p className="text-slate-400 mb-6 lg:mb-8 leading-relaxed text-sm lg:text-base break-words">{error}</p>
             <button
               onClick={handleReset}
-              className="px-8 py-3 bg-slate-800 hover:bg-slate-700 hover:border-slate-600 text-white rounded-lg transition-all border border-slate-700 font-medium shadow-lg shadow-black/50"
+              className="px-6 lg:px-8 py-2.5 lg:py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all border border-white/10 font-medium"
             >
               Try Another Paper
             </button>
@@ -210,7 +208,7 @@ const App: React.FC = () => {
 
         {/* State: COMPLETE */}
         {status === AnalysisStatus.COMPLETE && result && (
-          <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <AnalysisDashboard result={result} files={files} />
           </div>
         )}

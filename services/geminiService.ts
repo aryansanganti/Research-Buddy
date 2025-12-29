@@ -68,22 +68,36 @@ export const analyzePaper = async (files: FileData[]): Promise<AnalysisResult> =
 
     let cleanedText = text.trim();
 
-    // Robust JSON extraction:
-    // 1. Find the first '{' to start the JSON object.
-    // 2. Find the last '}' to end the JSON object.
+    // Robust JSON extraction
+    // Sometimes models wrap JSON in markdown blocks ```json ... ```
+    // We remove those if present.
+    if (cleanedText.startsWith('```json')) {
+      cleanedText = cleanedText.replace(/^```json/, '').replace(/```$/, '');
+    } else if (cleanedText.startsWith('```')) {
+      cleanedText = cleanedText.replace(/^```/, '').replace(/```$/, '');
+    }
+    
+    // Find the outer-most braces to handle any preamble/postamble text
     const firstBrace = cleanedText.indexOf('{');
     const lastBrace = cleanedText.lastIndexOf('}');
 
     if (firstBrace !== -1 && lastBrace !== -1) {
       cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
     }
+    
+    // Remove any potential non-printable characters causing issues
+    cleanedText = cleanedText.replace(/[\u0000-\u001F\u007F-\u009F]/g, (c) => {
+        // Keep valid whitespace like newline, tab, return
+        return ['\n', '\r', '\t'].includes(c) ? c : ''; 
+    });
 
     try {
       const parsed = JSON.parse(cleanedText) as AnalysisResult;
       return parsed;
     } catch (parseError) {
-      console.error("JSON Parse Error", parseError, text);
-      throw new Error("Failed to parse analysis result from Gemini.");
+      console.error("JSON Parse Error", parseError);
+      console.log("Raw text that failed parsing:", text);
+      throw new Error("Failed to parse analysis result from Gemini. The model output might be malformed.");
     }
 
   } catch (error) {
